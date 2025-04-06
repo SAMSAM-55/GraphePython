@@ -25,7 +25,7 @@ Im currently working on making this pip installable. I'll update the Installatio
 
 ### Example codes
 
-To use **GraphePython**, you first have to it and create a new graph :
+To use **GraphePython**, you first have to import it and create a new graph :
 ```python
 import GraphePython as gp
 
