@@ -1,6 +1,6 @@
 # GraphePython
 
-**GraphePython** is an implementation of Dijkstra's algorithm to find the shortest path in a non-oriented graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
+**GraphePython** is an implementation of Dijkstra's algorithm to find the shortest path in an undirectedted graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
 
 ## Functionalities
 
@@ -25,13 +25,13 @@ pip install GraphePython
 
 ### Tests
 
-If you to run some tests to check if the module is working correctly, you can use the tests int the tests folder and run the following command :
+If you to run some tests to check if the module is working correctly, you can use the tests in the tests folder and run the following command :
 
 ```bash
 python -m unittest discover tests
 ```
 
-## Example codes
+## Exemple codes
 
 To use **GraphePython**, you first have to import it and create a new graph :
 ```python
