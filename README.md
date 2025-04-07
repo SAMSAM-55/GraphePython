@@ -1,6 +1,6 @@
-# GraphPython
+# GraphePython
 
-**GraphPython** is an implementation of Dijkstra's algorithm to find the shortest path in a non-oriented graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
+**GraphePython** is an implementation of Dijkstra's algorithm to find the shortest path in a non-oriented graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
 
 ## Functionalities
 
