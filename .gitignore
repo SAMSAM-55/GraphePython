@@ -1,6 +1,20 @@
+# Fichiers temporaires Python
 __pycache__/
 *.pyc
-*.egg-info/
+
+# Distribution
 dist/
 build/
+*.egg-info/
+
+# Environnements virtuels
+venv/
+.env/
+
+# Fichiers spécifiques à l'IDE
 .vscode/
+.idea/
+
+# Logs et fichiers temporaires
+*.log
+*.tmp
