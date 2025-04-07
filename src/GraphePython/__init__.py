@@ -7,9 +7,8 @@ import  networkx as nx
 # A graph is a collection of nodes that are connected by edges.
 # Each edge has a weight, which represents the cost of traversing that edge.
 # A graph can be oriented which means that an edge can go from A to B but not necessary from B to A.
-# It can also be non-oriented which means that all edges go in both directions.
-# Here, to simplify the implementation of the algorithm, the graph is non-oriented.
-
+# It can also be undirected which means that all edges go in both directions.
+# Here, to simplify the implementation of the algorithm, the graph is undirected
 # The following class is used to initialize the graph. You can then run functions on it to add nodes and edges, and to find the shortest path between two nodes.
 # You can also visualize the graph and the shortest path between two nodes.
 class Graph :
