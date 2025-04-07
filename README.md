@@ -17,13 +17,21 @@
 
 ## Installation
 
-You can install this to your project by downloading the source code from this github page and then copy the GraphePython file to your workspace or project folder.
+You can install **GraphePython** via pip by running the following command :
 
-### Via pip (coming not soon)
+```bash
+pip install GraphePython
+```
 
-Im currently working on making this pip installable. I'll update the Installation once I wil have finished.
+### Tests
 
-### Example codes
+If you to run some tests to check if the module is working correctly, you can use the tests int the tests folder and run the following command :
+
+```bash
+python -m unittest discover tests
+```
+
+## Example codes
 
 To use **GraphePython**, you first have to import it and create a new graph :
 ```python

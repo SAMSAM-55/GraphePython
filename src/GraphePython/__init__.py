@@ -23,7 +23,7 @@ class Graph :
         self.ax = self.figure.add_subplot(111)
 
     # Function to add a single node which name is a string. A graph cannot have two nodes with the same name
-    def add_node(self, node : str):
+    def add_node(self, node : str) -> None:
         """
         Adds a single node to the graph.
 
@@ -39,9 +39,11 @@ class Graph :
             self.graph[node] = {}
             self.path_graph[node] = {}
             self.G.add_node(node)
+        
+        return
 
     # Function to add multiple nodes at once from an array which contains all nodes names
-    def add_nodes_from_array(self, nodes : list[str]):
+    def add_nodes_from_array(self, nodes : list[str]) -> None:
         """
         Adds multiple nodes to the graph from an array.
 
@@ -54,8 +56,10 @@ class Graph :
         for node in nodes :
             self.add_node(node) # Call the function to add a single node for each node in the array
 
+        return
+
     # Function to add an edge between two nodes with the provided weight
-    def add_edge(self, node1, node2, weight : float):
+    def add_edge(self, node1 : str, node2 : str, weight : float) -> None:
         """
         Adds an edge between two nodes with the specified weight.
         
@@ -74,6 +78,8 @@ class Graph :
             self.graph[node2][node1] = weight
             self.G.add_edge(node1, node2, weight = weight)
             self.edges_labels[(node1, node2)] = weight
+        
+        return
 
     # Function to get the weight of a provided edge between two nodes. If the edge doesn't exit it returns 0
     def get_edge_weight(self, node1 : str, node2 : str) -> int:
@@ -84,7 +90,7 @@ class Graph :
             return 0
 
     # Function to get all edges from a node
-    def get_all_edges(self, node) -> list[str]:
+    def get_all_edges(self, node : str) -> list[str]:
         """
         Returns all edges from a node.
 
@@ -97,9 +103,12 @@ class Graph :
 
         if node in self.graph :
             return self.graph.get(node)
+        
+        else :
+            return []
 
     # Function to visualize the graph and a path between two nodes
-    def draw_graph(self, path : list[str], path_text : str):
+    def draw_graph(self, path : list[str], path_text : str) -> None:
         """
         Draws the graph and highlights the path between two nodes.
 
@@ -115,8 +124,9 @@ class Graph :
         
         # Store all the edges in the path to highlight them
         path_edges = []
-        for i in range(0, len(path) - 1):
-            path_edges.append((path[i], path[i + 1]))
+        for i in range(0, len(path) - 1): # Loop through the path to get all the edges in it
+            if path[i] in self.graph and path[i + 1] in self.graph[path[i]]: # Check if the edge is in the graph
+                path_edges.append((path[i], path[i + 1]))
 
         other_edges = self.G.edges() - path_edges # Storing all the edges that are not in the path to draw them in a different color
         
@@ -131,6 +141,8 @@ class Graph :
         plt.suptitle(t=path_text, fontsize=14) # Adding the graph title
 
         plt.show()
+
+        return
 
     # Function to find the shortest path between two nodes using Dijkstra's algorithm
     def get_path(self, start : str, finish : str, draw : bool) -> list[str]:
