@@ -1,4 +1,4 @@
-# Fichiers temporaires Python
+# Python temporary files
 __pycache__/
 *.pyc
 
@@ -7,14 +7,15 @@ dist/
 build/
 *.egg-info/
 
-# Environnements virtuels
+# Virtual environments
+.venv/
 venv/
 .env/
 
-# Fichiers spécifiques à l'IDE
+# IDE specific files
 .vscode/
 .idea/
 
-# Logs et fichiers temporaires
+# Logs and temporary files
 *.log
 *.tmp
