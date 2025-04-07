@@ -83,14 +83,14 @@ class Graph :
 
     # Function to get the weight of a provided edge between two nodes. If the edge doesn't exit it returns 0
     def get_edge_weight(self, node1 : str, node2 : str) -> int:
-        if node1 in self.graph and node2 in self.graph and self.graph.get(node1).get(node2) != None:
+        if node1 in self.graph and node2 in self.graph and self.graph.get(node1).get(node2) is not None:
             return int(self.graph.get(node1).get(node2))
 
         else :
             return 0
 
     # Function to get all edges from a node
-    def get_all_edges(self, node : str) -> list[str]:
+    def get_neighbors(self, node : str) -> list[str]:
         """
         Returns all edges from a node.
 
@@ -124,9 +124,9 @@ class Graph :
         
         # Store all the edges in the path to highlight them
         path_edges = []
-        for i in range(0, len(path) - 1): # Loop through the path to get all the edges in it
-            if path[i] in self.graph and path[i + 1] in self.graph[path[i]]: # Check if the edge is in the graph
-                path_edges.append((path[i], path[i + 1]))
+        for node1, node2 in zip(path, path[1:]):  # Iterate over consecutive pairs of nodes
+            if node1 in self.graph and node2 in self.graph[node1]:  # Check if the edge is in the graph
+                path_edges.append((node1, node2))
 
         other_edges = self.G.edges() - path_edges # Storing all the edges that are not in the path to draw them in a different color
         
@@ -157,9 +157,24 @@ class Graph :
         path (list[str]) : The list of nodes representing the shortest path between the two nodes.
         """
 
+        if start in self.path_graph and finish in self.path_graph[start] : # Check if the path between the two nodes is already calculated
+            path = []
+            predecessor = self.path_graph[start][1] # Get the predecessors of the nodes
+            weights = self.path_graph[start][0] # Get the weights of the nodes
+            path.insert(0, finish) # Add the finish node to the path
+
+            while path[0] != start :
+                path.insert(0, predecessor[path[0]])
+
+            if draw :
+                # Drawing the graph with the path between the two nodes
+                self.draw_graph(
+                    path_text=f"The shortest path between {start} and {finish} is {path} that costs {weights[finish]}", path=path)
+            
+            return path # Return the path if it is already calculated
+
         # Initializing the variables
         queue = []
-        weights = {}
         weights = {}
         
         for i in self.graph.keys() : # Adding all the nodes in the queue except the start node
@@ -174,20 +189,20 @@ class Graph :
         # Main loop that executes until it has gone through all the nodes to find the shortest path from the start node
         while queue :
             current_node = queue[0]
-            edges = self.get_all_edges(current_node)
-            for edge in edges :
+            neighbors = self.get_neighbors(current_node)
+            for neighbor in neighbors :
                 # Adding the edge into the weight dictionary if it is not already present
-                if not edge in weights :
-                    weights[edge] = self.get_edge_weight(current_node, edge) + weights[current_node]
-                    predecessor[edge] = current_node
+                if not neighbor in weights :
+                    weights[neighbor] = self.get_edge_weight(current_node, neighbor) + weights[current_node]
+                    predecessor[neighbor] = current_node
 
                 # Updating the cost of the current edge if we find a shorter path and adding the current edge and node into the queue to reprocess them
-                elif (edge in weights) and (current_node in weights) :
-                    if weights[edge] > self.get_edge_weight(current_node, edge) + weights[current_node] :
-                        weights[edge] = self.get_edge_weight(current_node, edge) + weights[current_node]
-                        queue.insert(0, edge)
+                elif (neighbor in weights) and (current_node in weights) :
+                    if weights[neighbor] > self.get_edge_weight(current_node, neighbor) + weights[current_node] :
+                        weights[neighbor] = self.get_edge_weight(current_node, neighbor) + weights[current_node]
+                        queue.insert(0, neighbor)
                         queue.insert(0, current_node)
-                        predecessor[edge] = current_node
+                        predecessor[neighbor] = current_node
 
             # Removing the current node from the queue and adding the next node to process
             queue.remove(current_node)
@@ -203,7 +218,9 @@ class Graph :
         while path[0] != start :
             path.insert(0, predecessor[path[0]])
 
-        self.path_graph[start] = weights
+        self.path_graph[start] = (weights, predecessor) # Storing the path data to be able to use it later if needed
+        
+        # If the path is empty, it means that there is no path between the two nodes
 
         if draw :
             # Drawing the graph with the path between the two nodes
