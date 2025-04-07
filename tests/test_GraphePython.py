@@ -27,13 +27,10 @@ class TestGraph(unittest.TestCase):
         self.graph.add_edge("A", "C", 10)
         self.graph.add_edge("B", "C", 5)
         self.graph.add_edge("A", "B", 25)
-        print("Test : ", len(["A", "B", "C"]))
         path = self.graph.get_path("A", "B", True)
         self.assertEqual(path, ["A", "C", "B"])
-        print("Path from A to B:", path)
         path = self.graph.get_path("A", "C", False)
         self.assertEqual(path, ["A", "C"])
-        print("Path from A to C:", path)
 
 
 if __name__ == "__main__":
