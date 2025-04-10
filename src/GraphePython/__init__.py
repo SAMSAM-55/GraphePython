@@ -227,3 +227,20 @@ class Graph :
                 path_text=f"The shortest path between {start} and {finish} is {path} that costs {weights[finish]}", path=path)
 
         return path
+    
+    def save_graph(self, path : str, name : str) :
+        """
+        Saves the graph to a text file in the provided path
+
+        Parameters :
+        path(str) : the path for the file to be saved
+        name(str) : the name of the file the graph will be saved to
+
+
+        Returns : 
+        None
+        """
+        file = open(path.join(name), "x")
+
+        for node in self.graph :
+            file.write()
