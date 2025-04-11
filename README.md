@@ -1,11 +1,11 @@
 # GraphePython
 
-**GraphePython** is an implementation of Dijkstra's algorithm to find the shortest path in an undirectedted graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
+**GraphePython** is an implementation of Dijkstra's algorithm to find the shortest path in an undirected graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
 
 ## Functionalities
 
 - Creation of graphs with nodes and weighted edges
-- Search of the shortest path in a non oriented graph
+- Search of the shortest path in an undirected graph
 - Support graph visualisation with networkx and matplotlib
 
 ### Prerequisites
@@ -83,6 +83,13 @@ graph.draw_graph(path = [], path_text = "Graph title") # This creates a new wind
 This should give you something like this :
 
 ![Figure : graph visualization exemple using Matplotlib](demo_images/GraphePython-demo.png)
+
+Finally, you can save your graphs into text files :
+
+```python
+graph.save_graph("graph.txt", "myGraphs/") # This will save the current graph into the graph.txt file in the myGraphs folder
+graph.load_graph("graph.txt", "myGraphs/") # This loads the previously saved graph
+```
 
 ## License
 
