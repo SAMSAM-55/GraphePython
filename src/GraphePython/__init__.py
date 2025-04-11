@@ -1,6 +1,8 @@
-# Importing necessary libraries for graph visualisation
+# Importing necessary libraries
 import matplotlib.pyplot as plt
-import  networkx as nx
+import networkx as nx
+import json
+from . import file_path
 
 # This program is an implementation of Dijkstra's algorithm to find the shortest path in a graph.
 # The graph is represented as a dictionary, and the program uses NetworkX for visualisation.
@@ -120,7 +122,7 @@ class Graph :
         """
 
         self.ax.clear() # Make sure the figure is empty before drawing the graph
-        
+
         # Store all the edges in the path to highlight them
         path_edges = []
         for node1, node2 in zip(path, path[1:]):  # Iterate over consecutive pairs of nodes
@@ -132,8 +134,8 @@ class Graph :
         pos = nx.spring_layout(self.G) # Initializing the graph layout
         nx.draw_networkx_nodes(self.G, pos) # Drawing the nodes
         nx.draw_networkx_labels(self.G, pos) # Adding the names on each node
-        nx.draw_networkx_edges(self.G, pos, edgelist=path_edges, edge_color='r', arrows=True) # Drawing the edges in the path in red
         nx.draw_networkx_edges(self.G, pos, edgelist=other_edges, edge_color='black', arrows=True) # Drawing the edges that are not in the path in black
+        nx.draw_networkx_edges(self.G, pos, edgelist=path_edges, edge_color='r', arrows=True) # Drawing the edges in the path in red after the other edges to avoid some errors due to order in the pairs of the nx graph (e.g : ('A', 'B') and ('B', 'A'))
         nx.draw_spring(self.G, with_labels=True, font_weight='bold', ax=self.ax) # Drawing the graph
         nx.draw_networkx_edge_labels(self.G, pos, edge_labels=self.edges_labels) # Adding the weight labels on the edges
 
@@ -228,19 +230,52 @@ class Graph :
 
         return path
     
-    def save_graph(self, path : str, name : str) :
+    # Function to save the graph
+    def save_graph(self, name : str, path : str = "") -> None :
         """
         Saves the graph to a text file in the provided path
 
         Parameters :
         path(str) : the path for the file to be saved
-        name(str) : the name of the file the graph will be saved to
+        name(str) : the name of the file the graph will be saved to (default : "" wich means that the file will be saved to the current directory)
 
 
         Returns : 
         None
         """
-        file = open(path.join(name), "x")
+        file = open((file_path.get_file_path(path, name) if path != "" else name), "w")
 
-        for node in self.graph :
-            file.write()
+        file.write(json.dumps(self.graph))
+
+        return
+    
+    # Function to load a graph
+    def load_graph(self, name : str, path : str = "") -> None :
+        """
+        Loads a graph from a text file in the provided path
+
+        Parameters :
+        name(str) : the name of the text file to be loaded
+        path(str) : the path of the text to be loaded from (default : "" wich means that the file will be loaded from the current directory)
+
+        Returns :
+        None
+        """
+
+        file = open((file_path.get_file_path(path, name) if path != "" else name), "r").read()
+
+        # Resets the graph
+        self.graph = {}
+        self.path_graph = {}
+        self.G = nx.Graph()
+        self.edges_labels = {}
+
+        loaded_graph = dict(json.loads(file))
+
+        for node in loaded_graph.keys() :
+            self.add_node(node)
+
+            for neighbour in loaded_graph[node] :
+                self.add_edge(node, neighbour, loaded_graph[node][neighbour])
+
+        return
