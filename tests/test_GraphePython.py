@@ -32,6 +32,14 @@ class TestGraph(unittest.TestCase):
         path = self.graph.get_path("A", "C", False)
         self.assertEqual(path, ["A", "C"])
 
+    def test_save_graph(self) :
+        self.graph.save_graph("test.txt", "tests/")
+
+    def test_load_graph(self) :
+        self.graph.load_graph("graph1.txt", "tests/")
+
+        self.graph.draw_graph([], "Here's the loaded graph")
+
 
 if __name__ == "__main__":
     unittest.main()
