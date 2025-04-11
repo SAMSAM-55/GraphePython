@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="GraphePython",
-    version="1.1",
+    version="1.2",
     author="Saubion Sami",
     author_email="sami.saubion@gmail.com",
     description="Implementation of Dijkstra's algorithm with graph visualization.",

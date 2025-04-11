@@ -237,7 +237,7 @@ class Graph :
 
         Parameters :
         path(str) : the path for the file to be saved
-        name(str) : the name of the file the graph will be saved to (default : "" wich means that the file will be saved to the current directory)
+        name(str) : the name of the file the graph will be saved to (default : "" which means that the file will be saved to the current directory)
 
 
         Returns : 
@@ -256,7 +256,7 @@ class Graph :
 
         Parameters :
         name(str) : the name of the text file to be loaded
-        path(str) : the path of the text to be loaded from (default : "" wich means that the file will be loaded from the current directory)
+        path(str) : the path of the text to be loaded from (default : "" which means that the file will be loaded from the current directory)
 
         Returns :
         None
