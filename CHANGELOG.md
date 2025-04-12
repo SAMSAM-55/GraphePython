@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3]
+### Added
+- Added the ability to genrate random connected graphs
+
 ## [1.2]
 ### Added
 - Added the ability to save graphs to text files with `save_graph`.

@@ -1,19 +1,32 @@
 # GraphePython
 
-**GraphePython** is an implementation of Dijkstra's algorithm to find the shortest path in an undirected graph. This project allows you to easily create graphs and find the shortest path. It also supports a graphic visualisation.
+**GraphePython** is a Python library for creating and analyzing graphs. It provides an implementation of Dijkstra's algorithm to find the shortest path in an undirected graph, along with tools for graph visualization and random graph generation.
 
-## Functionalities
+## Table of Contents
+- [Functionalities](#functionalities)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Tests](#tests)
+- [Example Codes](#example-codes)
+  - [The Basics](#the-basics)
+  - [Finding the Shortest Path](#finding-the-shortest-path)
+  - [Random Graphs Generation](#random-graphs-generation)
+  - [Saving and Loading Graphs](#saving-and-loading-graphs)
+- [License](#license)
 
-- Creation of graphs with nodes and weighted edges
-- Search of the shortest path in an undirected graph
-- Support graph visualisation with networkx and matplotlib
+## Features
+
+- Create graphs with nodes and weighted edges
+- Find the shortest path in an undirected graph
+- Visualize graphs with NetworkX and Matplotlib
+- Generate random connected graphs
 
 ### Prerequisites
 
 - Python 3.7 or higher
 - You must have the following libraries installed :
-    - `matplotlib`
-    - `networkx`
+    - `matplotlib` 3.0 or higher
+    - `networkx` 2.0 or higher
 
 ## Installation
 
@@ -32,6 +45,8 @@ python -m unittest discover tests
 ```
 
 ## Exemple codes
+
+### The basics
 
 To use **GraphePython**, you first have to import it and create a new graph :
 ```python
@@ -67,13 +82,7 @@ graph.add_edge("F", "I", 13)
 graph.add_edge("G", "E", 9)
 ```
 
-Finally you can get the shortest path between two nodes :
-
-```python
-graph.get_path("A", "K", draw=False) # Returns the shortest path between A and K in an array here : ['A', 'C', 'F', 'I', 'J', 'K']
-```
-
-You can also see your graph by setting the draw input to True or by calling the draw graph function :
+You can also see your graph by setting the `draw` input to `True` or by calling the `draw_graph` function :
 
 ```python
 graph.get_path("A", "K", draw=True) # Returns the shortest path and shows it in a Matplotlib window
@@ -84,12 +93,58 @@ This should give you something like this :
 
 ![Figure : graph visualization exemple using Matplotlib](demo_images/GraphePython-demo.png)
 
-Finally, you can save your graphs into text files :
+### Finding the shortest path
+
+You can get the shortest path between two nodes by using the `get_path` function :
+
+```python
+graph.get_path("A", "K", draw=False) # Returns the shortest path between A and K in an array here : ['A', 'C', 'F', 'I', 'J', 'K']
+```
+
+### Random graphs generation
+
+You can also generate random graphs with **GraphePython**. Here's an example:
+
+```python
+import GraphePython as gp
+
+# Create a new graph instance
+graph = gp.Graph()
+
+# Generate a random graph with the following parameters:
+# - 10 nodes
+# - 15 edges
+# - Edge weights ranging from 1 to 10
+# - Node naming method: LETTERS (nodes will be named A, B, C, ...)
+graph.generate_random_graph(
+    number_of_nodes=10,
+    number_of_edges=15,
+    weight_range=(1, 10),
+    node_naming_method="LETTERS"
+)
+
+# Visualize the generated graph
+graph.draw_graph(path=[], path_text="Randomly Generated Graph")
+
+# Save the generated graph to a file
+graph.save_graph("random_graph.txt", "myGraphs/")
+
+# Load the graph back from the file (to verify saving/loading works)
+graph.load_graph("random_graph.txt", "myGraphs/")
+graph.draw_graph(path=[], path_text="Loaded Random Graph")
+```
+This will generate a random graph, visualize it, save it to a file, and reload it for further use.
+
+### Saving and loading graphs
+
+As mentioned above, you can save your graphs into text files :
 
 ```python
 graph.save_graph("graph.txt", "myGraphs/") # This will save the current graph into the graph.txt file in the myGraphs folder
 graph.load_graph("graph.txt", "myGraphs/") # This loads the previously saved graph
 ```
+
+
 
 ## License
 
