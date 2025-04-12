@@ -2,7 +2,9 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import json
-from . import file_path
+from . import utils
+import random
+import math
 
 # This program is an implementation of Dijkstra's algorithm to find the shortest path in a graph.
 # The graph is represented as a dictionary, and the program uses NetworkX for visualisation.
@@ -78,7 +80,7 @@ class Graph :
             self.graph[node1][node2] = weight
             self.graph[node2][node1] = weight
             self.G.add_edge(node1, node2, weight = weight)
-            self.edges_labels[(node1, node2)] = weight
+            self.edges_labels[(node1, node2)] = round(weight, 1) # Rounding the shown weight to 1 digit to avoid messy graph display when drawing it
         
         return
 
@@ -89,11 +91,14 @@ class Graph :
 
         else :
             return 0
+        
+    def get_graph_nodes(self) :
+        return list(self.graph.keys())
 
     # Function to get all edges from a node
     def get_neighbors(self, node : str) -> list[str]:
         """
-        Returns all edges from a node.
+        Returns all naighbors of a node.
 
         Parameters:
         node (str): The name of the node.
@@ -133,11 +138,11 @@ class Graph :
         
         pos = nx.spring_layout(self.G) # Initializing the graph layout
         nx.draw_networkx_nodes(self.G, pos) # Drawing the nodes
-        nx.draw_networkx_labels(self.G, pos) # Adding the names on each node
+        nx.draw_networkx_labels(self.G, pos) # Adding labbels to each node
         nx.draw_networkx_edges(self.G, pos, edgelist=other_edges, edge_color='black', arrows=True) # Drawing the edges that are not in the path in black
         nx.draw_networkx_edges(self.G, pos, edgelist=path_edges, edge_color='r', arrows=True) # Drawing the edges in the path in red after the other edges to avoid some errors due to order in the pairs of the nx graph (e.g : ('A', 'B') and ('B', 'A'))
         nx.draw_spring(self.G, with_labels=True, font_weight='bold', ax=self.ax) # Drawing the graph
-        nx.draw_networkx_edge_labels(self.G, pos, edge_labels=self.edges_labels) # Adding the weight labels on the edges
+        nx.draw_networkx_edge_labels(self.G, pos, edge_labels=self.edges_labels) # Adding the weight labels to the edges
 
         plt.suptitle(t=path_text, fontsize=14) # Adding the graph title
 
@@ -237,13 +242,13 @@ class Graph :
 
         Parameters :
         path(str) : the path for the file to be saved
-        name(str) : the name of the file the graph will be saved to (default : "" which means that the file will be saved to the current directory)
+        name(str) : the name of the file to save the graph to (default : "" which means that the file will be saved to the current directory)
 
 
         Returns : 
         None
         """
-        file = open((file_path.get_file_path(path, name) if path != "" else name), "w")
+        file = open((utils.get_file_path(path, name) if path != "" else name), "w")
 
         file.write(json.dumps(self.graph))
 
@@ -256,13 +261,13 @@ class Graph :
 
         Parameters :
         name(str) : the name of the text file to be loaded
-        path(str) : the path of the text to be loaded from (default : "" which means that the file will be loaded from the current directory)
+        path(str) : the path of the file to be loaded from (default : "" which means that the file will be loaded from the current directory)
 
         Returns :
         None
         """
 
-        file = open((file_path.get_file_path(path, name) if path != "" else name), "r").read()
+        file = open((utils.get_file_path(path, name) if path != "" else name), "r").read()
 
         # Resets the graph
         self.graph = {}
@@ -277,5 +282,84 @@ class Graph :
 
             for neighbour in loaded_graph[node] :
                 self.add_edge(node, neighbour, loaded_graph[node][neighbour])
+
+        return
+
+    # Function to generate a random connected graph
+    def generate_random_graph(self, number_of_nodes : int, number_of_edges : int, weight_range : tuple[float, float] = (1, 5), node_naming_method : str = "letters", array : list[str] = []) -> None:
+        """
+        This function allows you to generate random graphs that will always be connected. This ensures that you can find a path between two nodes
+
+        Parameters :
+        number_of_nodes(int) : the desired number of nodes for the graph
+        number_of_edges(int) : the desired number of edges for the graph
+        weight_range(tuple[float, float]) : the minimum and maximum weight for the graph edges (default : (1, 5))
+        node_naming_method(str) : the method that should be used to name the nodes of the graph. There are 4 types of naming method :
+        - LETTERS will name the nodes in an alphabetical order and will continue with AA, AB, AC, ... if the number of nodes is greater than 26.
+        - NUMBERS will name the nodes with the number from 1 to the number of nodes
+        - LIST will name the nodes using a provided list of names in the array parameter
+        - LIST_RANDOM will name the nodes using random names from a provided list of names in the array parameter
+        array(list[str]) : the list of names to be used if the naming method is either LIST or LIST_RANDOM
+
+        Returns :
+        None
+        """
+
+
+        if number_of_edges > (number_of_nodes*(number_of_nodes - 1))/2 or number_of_edges < number_of_nodes - 1 : # Checks if the number of edges is valid (not too high or too low)
+            raise ValueError("Invalid number of edges")
+        
+        nodes_names = utils.get_nodes_names_from_method(utils.string_to_naming_method(node_naming_method), number_of_nodes, array)
+        
+        # Resets the graph
+        self.graph = {}
+        self.path_graph = {}
+        self.G = nx.Graph()
+        self.edges_labels = {}
+
+        not_visited_nodes, visited_nodes = nodes_names, list()
+        self.add_nodes_from_array(nodes_names)
+
+        # Pick a random node and mark as visited, then set it as the current node
+        current_node = random.sample(not_visited_nodes, 1).pop()
+        not_visited_nodes.remove(current_node)
+        visited_nodes.append(current_node)
+        existing_edges = []
+
+        while not_visited_nodes :
+            # Randomly pick the next node to visit. This node will be one of the neighbors of the current node.
+            # If this node has not already been visited, we create a new edge between this node and the current node.
+
+            neighbor_node = random.sample(not_visited_nodes, 1).pop()
+
+            if neighbor_node not in visited_nodes :
+                self.add_edge(current_node, neighbor_node, random.uniform(weight_range[0], weight_range[1]))
+                existing_edges.append((current_node, neighbor_node))
+                existing_edges.append((neighbor_node, current_node))
+
+                not_visited_nodes.remove(neighbor_node)
+                visited_nodes.append(neighbor_node)
+            
+            # Set the new neighbor node to the current node
+            current_node = neighbor_node
+
+        nodes = self.get_graph_nodes()
+        max_attemps = 1000000
+        attemps = 0
+        # Add random edges until the desired number is reached
+        while len(existing_edges) / 2 < number_of_edges : # We divide the length by two because each edge is represented as 2 differents tuples in existing edges
+            # Pick two random nodes
+            node1 = random.sample(nodes, 1).pop()
+            node2 = random.sample(nodes, 1).pop()
+
+            # Check if there is already an edge between the two nodes and if the nodes are different
+            if (node1, node2) not in existing_edges and node1 != node2:
+                self.add_edge(node1, node2, random.uniform(weight_range[0], weight_range[1]))
+                existing_edges.append((node1, node2))
+                existing_edges.append((node2, node1))
+            attemps += 1
+
+            if attemps == max_attemps :
+                raise Warning("Could not add all edges to the graph due to saturation")
 
         return
