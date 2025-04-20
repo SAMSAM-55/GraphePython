@@ -306,7 +306,7 @@ class Graph :
         """
 
 
-        if number_of_edges > (number_of_nodes*(number_of_nodes - 1))/2 or number_of_edges < number_of_nodes - 1 : # Checks if the number of edges is valid (not too high or too low)
+        if number_of_edges not in range((number_of_nodes*(number_of_nodes - 1))/2, number_of_nodes - 1) : # Checks if the number of edges is valid (not too high or too low)
             raise ValueError("Invalid number of edges")
         
         nodes_names = utils.get_nodes_names_from_method(utils.string_to_naming_method(node_naming_method), number_of_nodes, array)
