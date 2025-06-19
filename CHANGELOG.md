@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4]
+
+## Added
+
+- Added the ability to genrate graphs with only integer weights
+- Added new tests for the graph genration
+
+## Fixed
+
+- Fixed a bug with the `generate_random_graph` function
+
 ## [1.3]
 
 ### Added

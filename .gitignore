@@ -19,3 +19,6 @@ venv/
 # Logs and temporary files
 *.log
 *.tmp
+
+# File generated while running tests
+tests/test.txt
