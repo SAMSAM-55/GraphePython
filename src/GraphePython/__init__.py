@@ -286,7 +286,7 @@ class Graph :
         return
 
     # Function to generate a random connected graph
-    def generate_random_graph(self, number_of_nodes : int, number_of_edges : int, weight_range : tuple[float, float] = (1, 5), node_naming_method : str = "letters", array : list[str] = []) -> None:
+    def generate_random_graph(self, number_of_nodes : int, number_of_edges : int, weight_range : tuple[float, float] = (1, 5), node_naming_method : str = "letters", array : list[str] = [], integer : bool = False) -> None:
         """
         This function allows you to generate random graphs that will always be connected. This ensures that you can find a path between two nodes
 
@@ -300,13 +300,13 @@ class Graph :
         - LIST will name the nodes using a provided list of names in the array parameter
         - LIST_RANDOM will name the nodes using random names from a provided list of names in the array parameter
         array(list[str]) : the list of names to be used if the naming method is either LIST or LIST_RANDOM
+        integer(bool) : defines weither or not the random weights should be rounded to nearest intager or be float(2 digits), default is false(float weights)
 
         Returns :
         None
         """
 
-
-        if number_of_edges not in range((number_of_nodes*(number_of_nodes - 1))/2, number_of_nodes - 1) : # Checks if the number of edges is valid (not too high or too low)
+        if number_of_edges not in range(number_of_nodes - 1, math.ceil((number_of_nodes*(number_of_nodes - 1))/2)) : # Checks if the number of edges is valid (not too high or too low)
             raise ValueError("Invalid number of edges")
         
         nodes_names = utils.get_nodes_names_from_method(utils.string_to_naming_method(node_naming_method), number_of_nodes, array)
@@ -333,7 +333,7 @@ class Graph :
             neighbor_node = random.sample(not_visited_nodes, 1).pop()
 
             if neighbor_node not in visited_nodes :
-                self.add_edge(current_node, neighbor_node, random.uniform(weight_range[0], weight_range[1]))
+                self.add_edge(current_node, neighbor_node, int(random.uniform(weight_range[0], weight_range[1])) if integer else random.uniform(weight_range[0], weight_range[1]))
                 existing_edges.append((current_node, neighbor_node))
                 existing_edges.append((neighbor_node, current_node))
 
@@ -354,7 +354,7 @@ class Graph :
 
             # Check if there is already an edge between the two nodes and if the nodes are different
             if (node1, node2) not in existing_edges and node1 != node2:
-                self.add_edge(node1, node2, random.uniform(weight_range[0], weight_range[1]))
+                self.add_edge(node1, node2, int(random.uniform(weight_range[0], weight_range[1])) if integer else random.uniform(weight_range[0], weight_range[1]))
                 existing_edges.append((node1, node2))
                 existing_edges.append((node2, node1))
             attemps += 1

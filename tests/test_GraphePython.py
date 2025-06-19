@@ -48,6 +48,13 @@ class TestGraph(unittest.TestCase):
         self.assertGreaterEqual(len(self.graph.G.edges), 20)
         self.graph.draw_graph([], "Here's the generated graph")
 
+    def test_generate_graph_with_integer_weights(self) :
+        self.graph.generate_random_graph(15, 20, (0.5, 78), integer=True)
+        self.assertEqual(len(self.graph.get_graph_nodes()), 15)
+        self.assertGreaterEqual(len(self.graph.G.edges), 20)
+        self.graph.draw_graph([], "Here's the generated graph")
+
+
     def test_invalid_graph_generation(self):
         with self.assertRaises(ValueError):
             self.graph.generate_random_graph(5, 50)  # Too many edges for 5 nodes
