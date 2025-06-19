@@ -3,6 +3,7 @@
 **GraphePython** is a Python library for creating and analyzing graphs. It provides an implementation of Dijkstra's algorithm to find the shortest path in an undirected graph, along with tools for graph visualization and random graph generation.
 
 ## Table of Contents
+
 - [Functionalities](#functionalities)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -25,8 +26,8 @@
 
 - Python 3.7 or higher
 - You must have the following libraries installed :
-    - `matplotlib` 3.0 or higher
-    - `networkx` 2.0 or higher
+  - `matplotlib` 3.0 or higher
+  - `networkx` 2.0 or higher
 
 ## Installation
 
@@ -38,7 +39,7 @@ pip install GraphePython
 
 ### Tests
 
-If you to run some tests to check if the module is working correctly, you can use the tests in the tests folder and run the following command :
+If you want to run some tests to check if the module is working correctly, you can use the tests in the tests folder and run the following command :
 
 ```bash
 python -m unittest discover tests
@@ -49,6 +50,7 @@ python -m unittest discover tests
 ### The basics
 
 To use **GraphePython**, you first have to import it and create a new graph :
+
 ```python
 import GraphePython as gp
 
@@ -133,6 +135,7 @@ graph.save_graph("random_graph.txt", "myGraphs/")
 graph.load_graph("random_graph.txt", "myGraphs/")
 graph.draw_graph(path=[], path_text="Loaded Random Graph")
 ```
+
 This will generate a random graph, visualize it, save it to a file, and reload it for further use.
 
 ### Saving and loading graphs
@@ -143,8 +146,6 @@ As mentioned above, you can save your graphs into text files :
 graph.save_graph("graph.txt", "myGraphs/") # This will save the current graph into the graph.txt file in the myGraphs folder
 graph.load_graph("graph.txt", "myGraphs/") # This loads the previously saved graph
 ```
-
-
 
 ## License
 

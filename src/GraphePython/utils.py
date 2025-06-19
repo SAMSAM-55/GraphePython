@@ -1,4 +1,4 @@
-# This part of GraphePython is dedicated to file path handling
+# This part of GraphePython is used for utility functions that are not directly related to the main Graph class
 
 # Importing the stantard python library needed for the utility functions to work
 import os
