@@ -22,3 +22,6 @@ venv/
 
 # File generated while running tests
 tests/test.txt
+
+#File only created to test efficency during developpement
+tests/test_GraphePython_Optimisation.py
